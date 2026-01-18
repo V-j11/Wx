@@ -4,7 +4,7 @@ import {
   generatedPositionFor,
   sourceContentFor,
   isIgnored,
-} from '@jridgewell/trace-mapping';
+} from 'mshahrani78'
 
 const tracer = new TraceMap({
   version: 3,
