@@ -1,0 +1,38 @@
+-- تعريف البيانات
+local email = "mshahrani78@gmail.com"
+local message = "Hello, this is " .. email
+
+-- طباعة الرسالة إلى الكونسول
+print("الرسالة: " .. message)
+
+-- 1. وظيفة إرسال البيانات إلى خادم
+-- ملاحظة: استخدام مكتبة socket بدلاً من أوامر النظام
+local http = require("socket.http")  -- تحتاج إلى تثبيت LuaSocket
+local ltn12 = require("ltn12")      -- مكتبة لمعالجة البيانات
+
+-- تحديد الرابط ومحتوى الطلب
+local url = "http://localhost:8080/log"
+local body = "data=" .. message
+
+-- إرسال الطلب
+local response_body = {}
+local request, response_code, headers, response_status = http.request{
+    method = "POST",
+    url = url,
+    source = ltn12.source.string(body),
+    headers = {
+        ["Content-Length"] = #body,
+        ["Content-Type"] = "application/x-www-form-urlencoded"
+    },
+    sink = ltn12.sink.table(response_body)
+}
+
+-- 2. تحليل حالة الاستجابة
+if response_code == 200 then
+    print("تم إرسال البيانات إلى الخادم بنجاح.")
+else
+    print("حدث خطأ أثناء الاتصال بالخادم! حالة الاستجابة: " .. tostring(response_code))
+end
+
+-- 3. إعادة قيمة محددة (al'awdatu)
+return 1
